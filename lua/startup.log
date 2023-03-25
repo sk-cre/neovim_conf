@@ -1,0 +1,352 @@
+
+
+times in msec
+ clock   self+sourced   self:  sourced script
+ clock   elapsed:              other lines
+
+000.070  000.070: --- NVIM STARTING ---
+000.357  000.287: event init
+000.679  000.322: early init
+052.176  051.498: locale set
+052.393  000.217: init first window
+054.632  002.239: inits 1
+055.312  000.680: window checked
+055.355  000.042: parsing arguments
+058.663  000.842  000.842: require('vim.shared')
+060.504  000.725  000.725: require('vim._meta')
+060.523  001.833  001.108: require('vim._editor')
+060.534  002.988  000.313: require('vim._init_packages')
+060.558  002.216: init lua interpreter
+060.830  000.272: expanding arguments
+061.022  000.192: inits 2
+062.549  001.526: init highlight
+062.559  000.010: waiting for UI
+071.937  009.378: done waiting for UI
+072.015  000.078: init screen for UI
+073.169  001.154: init default mappings
+073.287  000.118: init default autocommands
+082.082  000.358  000.358: sourcing C:\Program Files\Neovim\share\nvim\runtime\ftplugin.vim
+083.441  000.185  000.185: sourcing C:\Program Files\Neovim\share\nvim\runtime\indent.vim
+091.916  001.355  001.355: require('packer.util')
+092.033  006.187  004.832: require('packer')
+095.525  001.144  001.144: require('packer.log')
+095.547  002.064  000.920: require('packer.async')
+097.313  000.760  000.760: require('packer.result')
+097.356  001.797  001.037: require('packer.jobs')
+097.379  005.154  001.294: require('packer.plugin_utils')
+098.591  001.014  001.014: require('packer.snapshot')
+104.371  000.821  000.821: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\gruvbox-material\autoload\gruvbox_material.vim
+131.835  000.213  000.213: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\gruvbox-material/after/syntax/text/gruvbox_material.vim
+131.968  029.218  028.184: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\gruvbox-material\colors\gruvbox-material.vim
+133.196  001.103  001.103: require('compete')
+133.214  048.912  006.236: sourcing C:\Users\toaki\AppData\Local\nvim\init.lua
+133.310  010.568: sourcing vimrc file(s)
+136.508  000.225  000.225: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\rust.vim\ftdetect\rust.vim
+137.912  003.220  002.995: sourcing C:\Program Files\Neovim\share\nvim\runtime\filetype.lua
+138.543  000.081  000.081: sourcing C:\Program Files\Neovim\share\nvim\runtime\filetype.vim
+140.824  000.445  000.445: sourcing C:\Program Files\Neovim\share\nvim\runtime\syntax\synload.vim
+141.257  002.083  001.639: sourcing C:\Program Files\Neovim\share\nvim\runtime\syntax\syntax.vim
+153.341  001.099  001.099: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\gzip.vim
+153.910  000.099  000.099: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\health.vim
+159.337  000.957  000.957: sourcing C:\Program Files\Neovim\share\nvim\runtime\pack\dist\opt\matchit\plugin\matchit.vim
+160.023  005.672  004.715: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\matchit.vim
+160.891  000.555  000.555: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\matchparen.vim
+162.644  001.432  001.432: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\netrwPlugin.vim
+164.104  000.071  000.071: sourcing C:\Users\toaki\AppData\Local\nvim-data/rplugin.vim
+164.194  001.159  001.088: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\rplugin.vim
+164.826  000.252  000.252: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\shada.vim
+165.275  000.111  000.111: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\spellfile.vim
+166.031  000.414  000.414: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\tarPlugin.vim
+166.727  000.342  000.342: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\tohtml.vim
+167.170  000.106  000.106: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\tutor.vim
+167.962  000.465  000.465: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\zipPlugin.vim
+171.070  002.273  002.273: sourcing C:\Users\toaki\AppData\Local\nvim\plugin\packer_compiled.lua
+172.930  000.419  000.419: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\man.lua
+173.354  020.261: loading rtp plugins
+185.090  000.613  000.613: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\coc.nvim\autoload\coc\rpc.vim
+187.132  001.135  001.135: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\coc.nvim\autoload\coc\util.vim
+193.284  000.826  000.826: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\coc.nvim\autoload\coc\client.vim
+214.746  037.994  035.420: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\coc.nvim\plugin\coc.vim
+223.056  001.463  001.463: require('nvim-treesitter.utils')
+231.032  001.095  001.095: require('vim.treesitter.language')
+231.076  003.146  002.051: require('vim.treesitter.query')
+232.782  001.692  001.692: require('vim.treesitter.languagetree')
+232.916  007.099  002.260: require('vim.treesitter')
+233.607  010.493  003.395: require('nvim-treesitter.parsers')
+240.246  001.573  001.573: require('nvim-treesitter.ts_utils')
+240.324  002.536  000.963: require('nvim-treesitter.tsrange')
+241.350  001.013  001.013: require('nvim-treesitter.caching')
+241.439  005.034  001.485: require('nvim-treesitter.query')
+241.639  006.864  001.830: require('nvim-treesitter.configs')
+241.675  008.047  001.183: require('nvim-treesitter.info')
+242.708  001.022  001.022: require('nvim-treesitter.shell_command_selectors')
+242.782  023.644  002.618: require('nvim-treesitter.install')
+243.516  000.720  000.720: require('nvim-treesitter.statusline')
+244.344  000.808  000.808: require('nvim-treesitter.query_predicates')
+244.375  026.302  001.131: require('nvim-treesitter')
+246.410  028.656  002.354: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\nvim-treesitter\plugin\nvim-treesitter.lua
+251.448  000.597  000.597: require('nvim-ts-autotag._log')
+251.476  001.309  000.712: require('nvim-ts-autotag.utils')
+251.503  002.636  001.327: require('nvim-ts-autotag.internal')
+251.514  003.304  000.667: require('nvim-ts-autotag')
+251.617  003.549  000.245: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\nvim-ts-autotag\plugin\nvim-ts-autotag.vim
+255.040  000.764  000.764: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\prettier.nvim\plugin\prettier.vim
+258.795  000.396  000.396: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\rust.vim\plugin\cargo.vim
+259.375  000.193  000.193: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\rust.vim\plugin\rust.vim
+263.070  000.141  000.141: require('vim.keymap')
+263.326  001.140  000.999: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\telescope.nvim\plugin\telescope.lua
+264.738  000.155  000.155: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\vim-snippets\plugin\vimsnippets.vim
+265.893  019.692: loading packages
+266.281  000.388: loading after plugins
+266.358  000.077: inits 3
+278.639  012.280: reading ShaDa
+278.932  000.293: opening buffers
+279.004  000.072: BufEnter autocommands
+279.018  000.014: editing files in windows
+285.874  001.602  001.602: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\coc.nvim\autoload\coc\highlight.vim
+291.080  004.270  004.270: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\coc.nvim\autoload\coc\color.vim
+303.253  018.363: VimEnter autocommands
+303.275  000.022: UIEnter autocommands
+324.858  020.391  020.391: sourcing C:\Program Files\Neovim\share\nvim\runtime\autoload\provider\clipboard.vim
+324.914  001.248: before starting main loop
+326.466  000.514  000.514: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\coc.nvim\autoload\coc.vim
+327.577  000.439  000.439: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\coc.nvim\autoload\coc\compat.vim
+328.536  002.669: first screen update
+328.546  000.010: --- NVIM STARTED ---
+
+
+times in msec
+ clock   self+sourced   self:  sourced script
+ clock   elapsed:              other lines
+
+000.096  000.096: --- NVIM STARTING ---
+000.349  000.253: event init
+000.691  000.342: early init
+049.014  048.323: locale set
+049.201  000.187: init first window
+051.057  001.856: inits 1
+051.711  000.654: window checked
+051.750  000.039: parsing arguments
+054.908  000.901  000.901: require('vim.shared')
+056.728  000.659  000.659: require('vim._meta')
+056.746  001.813  001.154: require('vim._editor')
+056.757  002.988  000.274: require('vim._init_packages')
+056.790  002.052: init lua interpreter
+057.023  000.234: expanding arguments
+057.220  000.196: inits 2
+058.713  001.493: init highlight
+058.722  000.010: waiting for UI
+067.079  008.356: done waiting for UI
+067.189  000.111: init screen for UI
+068.335  001.145: init default mappings
+068.420  000.085: init default autocommands
+079.292  000.939  000.939: sourcing C:\Program Files\Neovim\share\nvim\runtime\ftplugin.vim
+081.910  000.674  000.674: sourcing C:\Program Files\Neovim\share\nvim\runtime\indent.vim
+086.451  000.385  000.385: sourcing C:\Program Files\Neovim\share\nvim\runtime\syntax\synload.vim
+089.716  000.228  000.228: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\rust.vim\ftdetect\rust.vim
+091.031  003.175  002.946: sourcing C:\Program Files\Neovim\share\nvim\runtime\filetype.lua
+091.772  000.107  000.107: sourcing C:\Program Files\Neovim\share\nvim\runtime\filetype.vim
+098.222  005.182  005.182: require('vim.filetype')
+107.381  005.757  005.757: require('vim.filetype.detect')
+108.896  000.117  000.117: sourcing C:\Program Files\Neovim\share\nvim\runtime\scripts.vim
+109.117  024.464  009.741: sourcing C:\Program Files\Neovim\share\nvim\runtime\syntax\syntax.vim
+115.380  005.691  005.691: sourcing C:\Users\toaki\AppData\Local\nvim\autoload\plug.vim
+123.439  000.145  000.145: sourcing C:\Program Files\Neovim\share\nvim\runtime\ftoff.vim
+137.536  000.213  000.213: sourcing C:\Users\toaki\AppData\Local\nvim-data\plugged\rust.vim\ftdetect\rust.vim
+139.188  000.159  000.159: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\rust.vim\ftdetect\rust.vim
+141.187  005.718  005.345: sourcing C:\Program Files\Neovim\share\nvim\runtime\filetype.lua
+141.800  000.058  000.058: sourcing C:\Program Files\Neovim\share\nvim\runtime\filetype.vim
+143.228  000.058  000.058: sourcing C:\Program Files\Neovim\share\nvim\runtime\ftplugin.vim
+144.543  000.056  000.056: sourcing C:\Program Files\Neovim\share\nvim\runtime\indent.vim
+147.648  000.762  000.762: sourcing C:\Users\toaki\AppData\Local\nvim-data\plugged\gruvbox-material\autoload\gruvbox_material.vim
+166.967  000.115  000.115: sourcing C:\Users\toaki\AppData\Local\nvim-data\plugged\gruvbox-material/after/syntax/text/gruvbox_material.vim
+167.025  020.791  019.913: sourcing C:\Users\toaki\AppData\Local\nvim-data\plugged\gruvbox-material\colors\gruvbox-material.vim
+167.084  084.086  027.106: sourcing C:\Users\toaki\AppData\Local\nvim\init.vim
+167.106  012.987: sourcing vimrc file(s)
+180.359  000.561  000.561: sourcing C:\Users\toaki\AppData\Local\nvim-data\plugged\coc.nvim\autoload\coc\rpc.vim
+181.906  000.986  000.986: sourcing C:\Users\toaki\AppData\Local\nvim-data\plugged\coc.nvim\autoload\coc\util.vim
+185.799  000.613  000.613: sourcing C:\Users\toaki\AppData\Local\nvim-data\plugged\coc.nvim\autoload\coc\client.vim
+201.081  028.874  026.714: sourcing C:\Users\toaki\AppData\Local\nvim-data\plugged\coc.nvim\plugin\coc.vim
+202.526  000.362  000.362: sourcing C:\Users\toaki\AppData\Local\nvim-data\plugged\rust.vim\plugin\cargo.vim
+203.022  000.148  000.148: sourcing C:\Users\toaki\AppData\Local\nvim-data\plugged\rust.vim\plugin\rust.vim
+204.705  000.173  000.173: sourcing C:\Users\toaki\AppData\Local\nvim-data\plugged\vim-snippets\plugin\vimsnippets.vim
+210.577  001.908  001.908: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\gzip.vim
+211.198  000.122  000.122: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\health.vim
+215.561  000.883  000.883: sourcing C:\Program Files\Neovim\share\nvim\runtime\pack\dist\opt\matchit\plugin\matchit.vim
+216.295  004.774  003.891: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\matchit.vim
+217.048  000.478  000.478: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\matchparen.vim
+219.201  001.797  001.797: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\netrwPlugin.vim
+220.519  000.074  000.074: sourcing C:\Users\toaki\AppData\Local\nvim-data/rplugin.vim
+220.566  000.988  000.914: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\rplugin.vim
+221.131  000.285  000.285: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\shada.vim
+221.565  000.120  000.120: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\spellfile.vim
+222.241  000.391  000.391: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\tarPlugin.vim
+222.837  000.300  000.300: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\tohtml.vim
+223.209  000.102  000.102: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\tutor.vim
+223.894  000.420  000.420: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\zipPlugin.vim
+227.637  002.910  002.910: sourcing C:\Users\toaki\AppData\Local\nvim\plugin\packer_compiled.lua
+240.038  000.650  000.650: require('nvim-treesitter.utils')
+246.253  000.837  000.837: require('vim.treesitter.language')
+246.279  002.433  001.596: require('vim.treesitter.query')
+247.456  001.169  001.169: require('vim.treesitter.languagetree')
+247.484  005.565  001.963: require('vim.treesitter')
+247.654  007.599  002.034: require('nvim-treesitter.parsers')
+251.124  000.737  000.737: require('nvim-treesitter.ts_utils')
+251.148  001.223  000.486: require('nvim-treesitter.tsrange')
+251.548  000.392  000.392: require('nvim-treesitter.caching')
+251.575  002.374  000.759: require('nvim-treesitter.query')
+251.603  003.284  000.910: require('nvim-treesitter.configs')
+251.615  003.952  000.667: require('nvim-treesitter.info')
+252.226  000.604  000.604: require('nvim-treesitter.shell_command_selectors')
+252.275  014.183  001.378: require('nvim-treesitter.install')
+252.662  000.377  000.377: require('nvim-treesitter.statusline')
+253.172  000.499  000.499: require('nvim-treesitter.query_predicates')
+253.186  023.233  008.174: require('nvim-treesitter')
+254.084  024.408  001.175: sourcing C:\Users\toaki\AppData\Local\nvim-data\plugged\nvim-treesitter\plugin\nvim-treesitter.lua
+256.113  000.239  000.239: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\man.lua
+256.214  020.309: loading rtp plugins
+258.778  000.077  000.077: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\coc.nvim\plugin\coc.vim
+260.668  000.154  000.154: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\nvim-treesitter\plugin\nvim-treesitter.lua
+264.354  000.524  000.524: require('nvim-ts-autotag._log')
+264.373  001.121  000.597: require('nvim-ts-autotag.utils')
+264.393  002.085  000.964: require('nvim-ts-autotag.internal')
+264.401  002.812  000.727: require('nvim-ts-autotag')
+264.474  002.956  000.145: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\nvim-ts-autotag\plugin\nvim-ts-autotag.vim
+266.376  000.198  000.198: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\prettier.nvim\plugin\prettier.vim
+267.903  000.071  000.071: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\rust.vim\plugin\cargo.vim
+268.264  000.071  000.071: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\rust.vim\plugin\rust.vim
+270.726  000.094  000.094: require('vim.keymap')
+270.823  000.772  000.678: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\telescope.nvim\plugin\telescope.lua
+271.803  000.075  000.075: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\vim-snippets\plugin\vimsnippets.vim
+272.650  012.061: loading packages
+273.206  000.556: loading after plugins
+273.271  000.064: inits 3
+282.695  009.424: reading ShaDa
+282.960  000.265: opening buffers
+283.012  000.052: BufEnter autocommands
+283.134  000.122: editing files in windows
+288.976  001.090  001.090: sourcing C:\Users\toaki\AppData\Local\nvim-data\plugged\coc.nvim\autoload\coc\highlight.vim
+292.624  002.965  002.965: sourcing C:\Users\toaki\AppData\Local\nvim-data\plugged\coc.nvim\autoload\coc\color.vim
+303.551  016.362: VimEnter autocommands
+303.570  000.019: UIEnter autocommands
+323.302  018.497  018.497: sourcing C:\Program Files\Neovim\share\nvim\runtime\autoload\provider\clipboard.vim
+323.361  001.294: before starting main loop
+324.904  000.452  000.452: sourcing C:\Users\toaki\AppData\Local\nvim-data\plugged\coc.nvim\autoload\coc.vim
+325.860  000.393  000.393: sourcing C:\Users\toaki\AppData\Local\nvim-data\plugged\coc.nvim\autoload\coc\compat.vim
+326.788  002.582: first screen update
+326.797  000.009: --- NVIM STARTED ---
+
+
+times in msec
+ clock   self+sourced   self:  sourced script
+ clock   elapsed:              other lines
+
+000.081  000.081: --- NVIM STARTING ---
+000.365  000.285: event init
+000.745  000.379: early init
+048.542  047.797: locale set
+048.753  000.211: init first window
+050.657  001.903: inits 1
+051.364  000.707: window checked
+051.399  000.036: parsing arguments
+054.297  000.779  000.779: require('vim.shared')
+056.016  000.676  000.676: require('vim._meta')
+056.033  001.712  001.036: require('vim._editor')
+056.047  002.835  000.344: require('vim._init_packages')
+056.070  001.835: init lua interpreter
+056.271  000.202: expanding arguments
+056.434  000.162: inits 2
+057.871  001.438: init highlight
+057.882  000.011: waiting for UI
+066.853  008.971: done waiting for UI
+066.935  000.082: init screen for UI
+068.008  001.074: init default mappings
+068.103  000.094: init default autocommands
+077.327  000.362  000.362: sourcing C:\Program Files\Neovim\share\nvim\runtime\ftplugin.vim
+079.646  000.354  000.354: sourcing C:\Program Files\Neovim\share\nvim\runtime\indent.vim
+088.685  001.203  001.203: require('packer.util')
+088.787  005.544  004.342: require('packer')
+092.627  001.201  001.201: require('packer.log')
+092.654  002.252  001.051: require('packer.async')
+095.003  001.218  001.218: require('packer.result')
+095.065  002.399  001.181: require('packer.jobs')
+095.093  006.132  001.481: require('packer.plugin_utils')
+096.524  001.172  001.172: require('packer.snapshot')
+104.812  000.801  000.801: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\gruvbox-material\autoload\gruvbox_material.vim
+130.223  000.142  000.142: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\gruvbox-material/after/syntax/text/gruvbox_material.vim
+130.337  027.153  026.210: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\gruvbox-material\colors\gruvbox-material.vim
+131.891  001.340  001.340: require('compete')
+131.914  050.848  009.507: sourcing C:\Users\toaki\AppData\Local\nvim\init.lua
+132.040  012.373: sourcing vimrc file(s)
+135.564  000.217  000.217: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\rust.vim\ftdetect\rust.vim
+136.988  003.321  003.104: sourcing C:\Program Files\Neovim\share\nvim\runtime\filetype.lua
+137.610  000.079  000.079: sourcing C:\Program Files\Neovim\share\nvim\runtime\filetype.vim
+139.741  000.411  000.411: sourcing C:\Program Files\Neovim\share\nvim\runtime\syntax\synload.vim
+140.139  001.933  001.522: sourcing C:\Program Files\Neovim\share\nvim\runtime\syntax\syntax.vim
+152.101  001.103  001.103: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\gzip.vim
+152.690  000.102  000.102: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\health.vim
+159.203  001.293  001.293: sourcing C:\Program Files\Neovim\share\nvim\runtime\pack\dist\opt\matchit\plugin\matchit.vim
+160.151  006.975  005.682: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\matchit.vim
+161.548  000.986  000.986: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\matchparen.vim
+163.933  001.945  001.945: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\netrwPlugin.vim
+166.079  000.107  000.107: sourcing C:\Users\toaki\AppData\Local\nvim-data/rplugin.vim
+166.210  001.733  001.626: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\rplugin.vim
+167.132  000.385  000.385: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\shada.vim
+167.709  000.145  000.145: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\spellfile.vim
+168.727  000.595  000.595: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\tarPlugin.vim
+169.780  000.490  000.490: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\tohtml.vim
+170.391  000.150  000.150: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\tutor.vim
+171.507  000.697  000.697: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\zipPlugin.vim
+176.479  003.647  003.647: sourcing C:\Users\toaki\AppData\Local\nvim\plugin\packer_compiled.lua
+179.761  000.486  000.486: sourcing C:\Program Files\Neovim\share\nvim\runtime\plugin\man.lua
+181.857  025.044: loading rtp plugins
+198.188  000.582  000.582: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\coc.nvim\autoload\coc\rpc.vim
+200.477  001.310  001.310: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\coc.nvim\autoload\coc\util.vim
+206.823  000.819  000.819: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\coc.nvim\autoload\coc\client.vim
+229.507  043.302  040.591: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\coc.nvim\plugin\coc.vim
+237.767  000.874  000.874: require('nvim-treesitter.utils')
+245.331  001.486  001.486: require('vim.treesitter.language')
+245.387  003.422  001.935: require('vim.treesitter.query')
+247.398  001.993  001.993: require('vim.treesitter.languagetree')
+247.524  007.705  002.290: require('vim.treesitter')
+248.226  010.433  002.728: require('nvim-treesitter.parsers')
+254.177  001.525  001.525: require('nvim-treesitter.ts_utils')
+254.246  002.386  000.861: require('nvim-treesitter.tsrange')
+255.371  001.107  001.107: require('nvim-treesitter.caching')
+255.472  004.850  001.357: require('nvim-treesitter.query')
+255.563  006.344  001.494: require('nvim-treesitter.configs')
+255.583  007.335  000.990: require('nvim-treesitter.info')
+256.610  001.016  001.016: require('nvim-treesitter.shell_command_selectors')
+256.697  022.005  002.348: require('nvim-treesitter.install')
+257.503  000.792  000.792: require('nvim-treesitter.statusline')
+258.425  000.901  000.901: require('nvim-treesitter.query_predicates')
+258.462  025.104  001.406: require('nvim-treesitter')
+260.140  027.095  001.991: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\nvim-treesitter\plugin\nvim-treesitter.lua
+265.120  000.591  000.591: require('nvim-ts-autotag._log')
+265.151  001.276  000.685: require('nvim-ts-autotag.utils')
+265.178  002.569  001.293: require('nvim-ts-autotag.internal')
+265.190  003.268  000.700: require('nvim-ts-autotag')
+265.269  003.486  000.217: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\nvim-ts-autotag\plugin\nvim-ts-autotag.vim
+268.146  000.338  000.338: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\prettier.nvim\plugin\prettier.vim
+273.400  001.003  001.003: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\rust.vim\plugin\cargo.vim
+274.337  000.325  000.325: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\rust.vim\plugin\rust.vim
+278.516  000.149  000.149: require('vim.keymap')
+278.853  001.530  001.381: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\telescope.nvim\plugin\telescope.lua
+280.719  000.204  000.204: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\vim-snippets\plugin\vimsnippets.vim
+282.024  022.886: loading packages
+282.457  000.432: loading after plugins
+282.548  000.092: inits 3
+296.640  014.091: reading ShaDa
+297.042  000.403: opening buffers
+297.176  000.134: BufEnter autocommands
+297.194  000.018: editing files in windows
+306.221  001.900  001.900: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\coc.nvim\autoload\coc\highlight.vim
+312.596  005.099  005.099: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\coc.nvim\autoload\coc\color.vim
+327.787  023.593: VimEnter autocommands
+327.846  000.059: UIEnter autocommands
+352.627  023.343  023.343: sourcing C:\Program Files\Neovim\share\nvim\runtime\autoload\provider\clipboard.vim
+352.695  001.505: before starting main loop
+354.190  000.447  000.447: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\coc.nvim\autoload\coc.vim
+355.113  000.315  000.315: sourcing C:\Users\toaki\AppData\Local\nvim-data\site\pack\packer\start\coc.nvim\autoload\coc\compat.vim
+355.894  002.437: first screen update
+355.902  000.008: --- NVIM STARTED ---
