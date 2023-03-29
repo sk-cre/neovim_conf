@@ -66,7 +66,7 @@ function watch_term(contest,problem)
     vim.cmd("tabnew")
     local full = vim.fn.expand(atcoder_dir .. "/" .. contest)
     if vim.fn.isdirectory(full) == 0 then
-        vim.cmd("lcd " .. atcoder_url)
+        vim.cmd("lcd " .. atcoder_dir)
         local res = vim.fn.system("cargo compete new " .. contest)
         local exit_code = vim.v.shell_error
         if exit_code ~= 0 then
