@@ -1,19 +1,15 @@
---local home_dir = vim.fn.expand("~/Documents/Compete")
---local snip_dir = home .. "/snippet"
---local playground_dir = home .. "/play_ground"
---local atcoder_dir = home .. "/atcoder"
+local home_dir = vim.fn.expand("~/Documents/codefolder")
+local atcoder_dir = home_dir .. "/atcoder"
+local snip_dir = home_dir .. "/atcoder/snippet"
+local playground_dir = home_dir .. "/play_ground"
 
-local home = vim.fn.expand('~/Documents/codefolder/atcoder')
-local snip = vim.fn.expand("~/Documents/codefolder/atcoder/snippet")
-local playground = vim.fn.expand("~/Documents/codefolder/play_ground")
---local vscode_snip = vim.fn.expand("~/AppData/Roaming/Code/User/snippets/rust.json")
 local atcoder_url = "https://atcoder.jp/contests/"
-local osname = vim.loop.os_uname().sysname
-local open_url = (osname == "Windows_NT" and "!start ") or (osname == "!Darwin" and "!open ") or (osname == "Linux" and "!exploler.exe ") or nil
+local os = vim.loop.os_uname().sysname
+local open_url = (os == "Windows_NT" and "!start ") or (os == "Darwin" and "!open ") or (os == "Linux" and "!exploler.exe ") or nil
 
 function open_playground()
     vim.cmd("tabnew Playground")
-    vim.cmd("lcd " .. playground)
+    vim.cmd("lcd " .. playground_dir)
     vim.cmd("e ./src/main.rs | %d | r ./src/template.rs | w")
     vim.cmd("60vs")
     vim.cmd("terminal cargo watch -x \"run\"") 
@@ -23,9 +19,12 @@ function open_playground()
 end
 
 function write_snippet()
-    local ulti_snip = vim.fn.expand(string.sub(vim.fn.stdpath("config"), 1, -6) .. "/coc/ultisnips/rust.snippets")
-    vim.cmd("cd "..snip)
-    vim.cmd("e " .. ulti_snip .. " | %d")
+    vim.cmd("tabnew")
+    vim.cmd("lcd "..snip_dir)
+    vim.cmd("e unused.rs")
+    vim.cmd("CocCommand snippets.editSnippets")
+    vim.cmd("sleep 1500m")
+    vim.cmd("%d")
     vim.cmd("r! cargo snippet -t ultisnips")
     local f = io.open("./src/other.snippets","r")
     if f ~= nil then
@@ -33,13 +32,12 @@ function write_snippet()
         vim.cmd("r ./src/other.snippets")
     end
     vim.cmd("w")
-    vim.cmd("cd -")
-    vim.cmd("bd")
+    vim.cmd("tabc")
 end
 
 function open_snippet()
     vim.cmd("tabnew snippet")
-    vim.cmd("lcd " .. snip .. "/src/")
+    vim.cmd("lcd " .. snip_dir .. "/src/")
     vim.cmd("e ." )
 end
 
@@ -66,9 +64,9 @@ end
 function watch_term(contest,problem)
     local problem = problem or "a"
     vim.cmd("tabnew")
-    local full = vim.fn.expand(home .. "/" .. contest)
+    local full = vim.fn.expand(atcoder_dir .. "/" .. contest)
     if vim.fn.isdirectory(full) == 0 then
-        vim.cmd("lcd " .. home)
+        vim.cmd("lcd " .. atcoder_url)
         local res = vim.fn.system("cargo compete new " .. contest)
         local exit_code = vim.v.shell_error
         if exit_code ~= 0 then
@@ -98,8 +96,8 @@ function floating_term(command)
         relative = "win",
         height = vim.o.lines,
         width = vim.o.columns,
-        col = 1,
-        row = 1
+        col = 0,
+        row = 0
     })
     vim.api.nvim_win_set_option(buf2, "winhighlight", "NormalFloat:MyFloatingTerm")
     vim.cmd("set winblend=10")
