@@ -1,6 +1,6 @@
-local home_dir = vim.fn.expand("~/Documents/codefolder")
+local home_dir = vim.fn.expand("~/Documents/Compete")
 local atcoder_dir = home_dir .. "/atcoder"
-local snip_dir = home_dir .. "/atcoder/snippet"
+local snip_dir = home_dir .. "/snippet"
 local playground_dir = home_dir .. "/play_ground"
 
 local atcoder_url = "https://atcoder.jp/contests/"
