@@ -1,45 +1,8 @@
 local home_dir = vim.fn.expand("~/Documents/Compete")
 local atcoder_dir = home_dir .. "/atcoder"
-local snip_dir = home_dir .. "/snippet"
-local playground_dir = home_dir .. "/play_ground"
-
 local atcoder_url = "https://atcoder.jp/contests/"
 local os = string.sub(vim.loop.os_uname().sysname, 1, 1)
 local open_url = (os == "W" and "!start ") or (os == "D" and "!open -g ") or (os == "L" and "!exploler.exe ") or nil
-
-function Open_playground()
-    vim.fn.system("[ ! -d " .. playground_dir .. " ] && cargo new " .. playground_dir)
-    local template = { "fn main() {", "    println!(\"Hello World!\");", "}" }
-    vim.cmd("tabnew | lcd " .. playground_dir .. " | e ./src/main.rs | %d ")
-    vim.api.nvim_buf_set_lines(vim.api.nvim_get_current_buf(), 0, -1, false, template)
-    vim.cmd("silent w | 60vs")
-    vim.cmd("term cargo watch -x run")
-    vim.cmd("norm G")
-    vim.cmd("wincmd l")
-    vim.cmd("silent 2 | stopinsert")
-end
-
-function Write_snippet()
-    local toml_path = snip_dir .. "/src/other_snippet.toml"
-    local python_command =
-    [[python3 -c "import sys, json, tomllib; print(json.dumps(tomllib.loads(sys.stdin.read()), indent=4))"]]
-    vim.fn.system("cat " .. toml_path .. " | " .. python_command .. " > " .. "~/Documents/Compete/snippet/test.json")
-    vim.cmd("tabnew | lcd " .. snip_dir .. " | e ./vscode_style/rust.json | %d")
-    vim.cmd("r! cargo snippet -t vscode")
-    vim.cmd("w")
-    local a_file = io.open("./vscode_style/rust.json", "r")
-    local a_data = vim.json.decode(a_file:read("*a"))
-    a_file:close()
-    local b_file = io.open("./test.json", "r")
-    local b_data = vim.json.decode(b_file:read("*a"))
-    b_file:close()
-    for k, v in pairs(b_data) do
-        a_data[k] = v
-    end
-    local a_file_write = io.open("./vscode_style/rust.json", "w")
-    a_file_write:write(vim.json.encode(a_data))
-    a_file_write:close()
-end
 
 function Get_contest()
     return vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
@@ -61,8 +24,8 @@ function Get_url(problem, skip)
     return { problem_data[2], problem_data[4] }
 end
 
-function Open_workspace(contest, problem)
-    local current_problem = Get_problem()
+function Watch_term(contest, problem)
+    local now_e = Get_problem()
     vim.cmd("tabnew")
     local full = vim.fn.expand(atcoder_dir .. "/" .. contest)
     if vim.fn.isdirectory(full) == 0 then
@@ -77,7 +40,7 @@ function Open_workspace(contest, problem)
         vim.cmd("lcd -")
     end
     vim.cmd("lcd " .. full)
-    local problem, url = unpack(Get_url(problem or current_problem, problem == nil))
+    local problem, url = unpack(Get_url(current_problem, problem == nil))
     vim.cmd("silent " .. open_url .. url)
     vim.cmd("e ./src/bin/" .. problem .. ".rs | 40vs")
     vim.cmd(string.format("terminal cargo watch -x \"compete t %s\"", problem))
@@ -89,7 +52,6 @@ end
 function Floating_term(command)
     --vim.api.nvim_set_hl(0, "MyFloatingTerm", { guibg = "Olive" })
     vim.cmd("highlight MyFloatingTerm guibg=Olive")
-    --vim.cmd("highlight MyFloatingTermUnfocused guibg=Grey")
     vim.o.termguicolors = true
     vim.o.pumblend = 20
     local orig_win = vim.api.nvim_get_current_win()  -- 元のウィンドウIDを保存
@@ -136,16 +98,12 @@ local cuc = vim.api.nvim_create_user_command
 cuc("NN", function(opts) Open_workspace(vim.split(opts.args, " ")[1], vim.split(opts.args, " ")[2] or "") end,
     { nargs = "+" })
 cuc("Np", function(opts) Open_workspace(Get_contest(), opts.args ~= "" and opts.args or nil) end, { nargs = "?" })
-cuc("Playground", function() Open_playground() end, {})
-cuc("Snippet", function() vim.cmd("tabnew | lcd " .. snip_dir .. "/src/ | e .") end, {})
-cuc("SnippetWrite", function() Write_snippet() end, {})
-cuc("Watch", function() Floating_term(":term cargo compete w submissions atcoder " .. Get_contest()) end, {})
 cuc("Me", function() vim.cmd(open_url .. atcoder_url .. Get_contest() .. '/submissions/me') end, {})
 cuc("Our",
     function()
-        vim.cmd(open_url .. "\"" .. atcoder_url .. Get_contest() ..
+        vim.cmd(open_url .. atcoder_url .. Get_contest() ..
             '/submissions?f.Task=' .. vim.fn.fnamemodify(Get_url(Get_problem(), false)[2], ":t") ..
-            '&f.LanguageName=Rust&f.Status=AC&f.User="')
+            '&f.LanguageName=Rust&f.Status=AC&f.User=')
     end, {})
 cuc("Size", function() vim.cmd(":!ls -lh %") end, {})
 cuc("Rank", function() vim.cmd(open_url .. atcoder_url .. Get_contest() .. '/standings') end, {})
@@ -157,7 +115,6 @@ cuc("Submit", function() Floating_term('term cargo compete s ' .. Get_problem())
 cuc("SubmitN", function() Floating_term('term cargo compete s ' .. Get_problem() .. " --no-test") end, {})
 cuc("TestCase", function() vim.cmd('35sp|e testcases/' .. Get_problem() .. ".yml") end, {})
 
---Function to scroll a terminal buffer if it's visible and not focused
 function _G.terminal_scroll()
     for _, win in ipairs(vim.api.nvim_list_wins()) do
         local buf = vim.api.nvim_win_get_buf(win)

@@ -1,48 +1,49 @@
-vim.cmd.packadd "packer.nvim"
-
--- Automatically install packer
-local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-	PACKER_BOOTSTRAP = vim.fn.system({"git","clone","--depth","1",
-		"https://github.com/wbthomason/packer.nvim",
-		install_path,
-	})
-	print("Installing packer close and reopen Neovim...")
-	vim.cmd([[packadd packer.nvim]])
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
 
--- Use a protected call so we don't error out on first use
-local status_ok, packer = pcall(require, "packer")
-if not status_ok then
-	return
-end
-
--- Have packer use a popup window
-packer.init({
-	display = {
-		open_fn = function()
-			return require("packer.util").float({ border = "rounded" })
-		end,
-	},
-})
-
-require("packer").startup(function(use)
-	use({ "wbthomason/packer.nvim" })
-    use({ 'neoclide/coc.nvim', {branch = 'release'}})
-    use({ 'honza/vim-snippets' })
-	use({ "rust-lang/rust.vim" })
-    use({ "sainnhe/gruvbox-material" })
-	use({ "MunifTanjim/prettier.nvim" })
-	use({ "nvim-telescope/telescope.nvim" })
-
-    use {
+vim.opt.rtp:prepend(lazypath)
+require("lazy").setup({
+    --{ 'neoclide/coc.nvim', branch = 'release', build = "cd /root/.local/share/nvim/lazy/coc.nvim/ && npm ci"},
+    { 'neoclide/coc.nvim',       branch = 'release', build = "npm ci" },
+    { 'honza/vim-snippets' },
+    { 'nvim-lua/plenary.nvim' },
+    { 'rust-lang/rust.vim' },
+    { 'sainnhe/gruvbox-material' },
+    { 'navarasu/onedark.nvim' },
+    { "savq/melange-nvim" },
+    {
         'nvim-treesitter/nvim-treesitter',
-        run = function()
-            local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
-            ts_update()
-        end,
-    }
-	use({ "nvim-telescope/telescope-file-browser.nvim" })
-	use({ "windwp/nvim-ts-autotag" })
+        event = { 'BufNewFile', 'BufRead' },
+        build = ":TSUpdate",
+        config = function()
+            require('nvim-treesitter.configs').setup {
+                ensure_installed = {
+                    "typescript", "javascript", "rust", "python", "go", "lua", "bash", "html", "css", "vue",
+                    "vim", "yaml", "toml", "ini", "json", "dockerfile", "markdown", "diff", "gitignore"
+                },
+                highlight = {
+                    enable = true,
+                },
+            }
+        end
+    },
+})
+vim.api.nvim_set_keymap('i', '<cr>',
+    "pumvisible() ? coc#_select_confirm() : \"\\<C-g>u\\<CR>\\<c-r>=coc#on_enter()\\<CR>\"",
+    { noremap = true, silent = true, expr = true })
 
-end)
+vim.g.coc_global_extensions = {
+    'coc-json', 'coc-pairs', 'coc-snippets', 'coc-ultisnips', 'coc-vimlsp',
+    'coc-lua', 'coc-yaml', 'coc-toml', 'coc-rust-analyzer', 'coc-python',
+}
+
+vim.o.statusline = "%{coc#status()}" .. vim.o.statusline
