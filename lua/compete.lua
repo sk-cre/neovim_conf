@@ -88,8 +88,9 @@ end
 
 function Floating_term(command)
     --vim.api.nvim_set_hl(0, "MyFloatingTerm", { guibg = "Olive" })
+    --vim.api.nvim_set_hl(0, "MyFloatingTerm", { guibg = "#808000" })
     vim.cmd("highlight MyFloatingTerm guibg=Olive")
-    --vim.cmd("highlight MyFloatingTermUnfocused guibg=Grey")
+    vim.cmd("highlight MyFloatingTermUnfocused guibg=Grey")
     vim.o.termguicolors = true
     vim.o.pumblend = 20
     local orig_win = vim.api.nvim_get_current_win()  -- 元のウィンドウIDを保存
@@ -103,6 +104,7 @@ function Floating_term(command)
         style = 'minimal',
     })
     vim.api.nvim_win_set_option(win, "winhighlight", "NormalFloat:MyFloatingTerm")
+    vim.api.nvim_win_set_option(win, "winhighlight", "NormalFloat:MyFloatingTerm,NormalFloatNC:MyFloatingTermUnfocused")
     vim.o.winblend = 20
     vim.cmd(command)
     if not string.match(command, "^term cargo compete s") then
@@ -132,6 +134,76 @@ function Floating_term(command)
     })
 end
 
+function Process_atcoder_data(data)
+    local my_rank = 1
+    local my_rating = 1200
+
+    for _, participant in ipairs(data.StandingsData) do
+        if participant.UserScreenName == "dinice" then
+            my_rank = participant.Rank
+            my_rating = participant.Rating
+            break
+        end
+    end
+
+    local total_submissions = {}
+    local total_correct = {}
+    local filtered_submissions = {}
+    local filtered_correct = {}
+
+    local tasks = {}
+    for _, task_info in ipairs(data.TaskInfo) do
+        table.insert(tasks, task_info.TaskScreenName)
+    end
+    table.sort(tasks)
+
+    for _, participant in ipairs(data.StandingsData) do
+        local is_within_range = my_rating and math.abs(participant.Rating - my_rating) <= 200
+        for _, task in ipairs(tasks) do
+            local result = participant.TaskResults[task]
+            if result then
+                total_submissions[task] = (total_submissions[task] or 0) + result.Count
+                if result.Status == 1 then -- 正答の場合
+                    total_correct[task] = (total_correct[task] or 0) + 1
+                end
+                if is_within_range then
+                    filtered_submissions[task] = (filtered_submissions[task] or 0) + result.Count
+                    if result.Status == 1 then
+                        filtered_correct[task] = (filtered_correct[task] or 0) + 1
+                    end
+                end
+            end
+        end
+    end
+
+    for _, task in ipairs(tasks) do
+        print(task:sub(8, 8) ..
+            "  " ..
+            (total_correct[task] or 0) ..
+            "/" .. (total_submissions[task] or
+                0) .. " (" .. (filtered_correct[task] or 0) .. "/" .. (filtered_submissions[task] or 0) .. ")")
+    end
+
+    print("\n自分の順位: " .. my_rank)
+end
+
+function Fetch_atcoder_standings()
+    local cookie_file_path = vim.fn.expand("~/Library/Application Support/cargo-compete/cookies.jsonl")
+    local cookie_str = ""
+    for line in io.lines(cookie_file_path) do
+        local cookie = vim.fn.json_decode(line)
+        if cookie.raw_cookie then
+            cookie_str = cookie_str .. " " .. cookie.raw_cookie
+        end
+    end
+    local url = 'https://atcoder.jp/contests/' .. Get_contest() .. '/standings/json'
+    local handle = io.popen('curl -s -b "' .. cookie_str .. '" "' .. url .. '"')
+    local result = handle:read("*a")
+    handle:close()
+    local data = vim.fn.json_decode(result)
+    Process_atcoder_data(data)
+end
+
 local cuc = vim.api.nvim_create_user_command
 cuc("NN", function(opts) Open_workspace(vim.split(opts.args, " ")[1], vim.split(opts.args, " ")[2] or "") end,
     { nargs = "+" })
@@ -156,6 +228,7 @@ cuc("TestR", function() Floating_term('term cargo compete t ' .. Get_problem() .
 cuc("Submit", function() Floating_term('term cargo compete s ' .. Get_problem()) end, {})
 cuc("SubmitN", function() Floating_term('term cargo compete s ' .. Get_problem() .. " --no-test") end, {})
 cuc("TestCase", function() vim.cmd('35sp|e testcases/' .. Get_problem() .. ".yml") end, {})
+cuc('FetchAtCoderStandings', Fetch_atcoder_standings, {})
 
 --Function to scroll a terminal buffer if it's visible and not focused
 function _G.terminal_scroll()

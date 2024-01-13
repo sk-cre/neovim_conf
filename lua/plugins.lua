@@ -20,6 +20,7 @@ require("lazy").setup({
     { 'sainnhe/gruvbox-material' },
     { 'navarasu/onedark.nvim' },
     { "savq/melange-nvim" },
+    { "rcarriga/nvim-notify" },
     {
         'nvim-treesitter/nvim-treesitter',
         event = { 'BufNewFile', 'BufRead' },

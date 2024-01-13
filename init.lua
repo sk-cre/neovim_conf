@@ -22,14 +22,6 @@ vim.opt.scrolloff = 7
 
 vim.g.rustfmt_autosave = 1
 vim.cmd("autocmd TermOpen * startinsert | setlocal nonumber norelativenumber")
---vim.api.nvim_create_autocmd("TermOpen", {
---pattern = "*",
---callback = function()
---vim.api.nvim_buf_set_option(0, 'number', false)
---vim.api.nvim_buf_set_option(0, 'relativenumber', false)
---vim.cmd('startinsert')
---end
---})
 
 vim.api.nvim_create_user_command('Rc', 'e $MYVIMRC', { nargs = 0 })
 vim.api.nvim_create_user_command('RRc', 'source $MYVIMRC', { nargs = 0 })
@@ -42,24 +34,3 @@ require("plugins")
 require("compete")
 require("colorscheme")
 require("tabline")
--- フォーカスがあるときの色
-vim.api.nvim_command('highlight FocusedFloatingWindow guibg=Olive')
--- フォーカスがないときの色
-vim.api.nvim_command('highlight UnfocusedFloatingWindow guibg=DarkGrey')
-
--- フォーカスが移動したときのイベントハンドラー
-function onWinEnter()
-    if vim.api.nvim_win_get_config(0).relative ~= '' then
-        vim.api.nvim_win_set_option(0, 'winhighlight', 'Normal:FocusedFloatingWindow')
-    end
-end
-
-function onWinLeave()
-    if vim.api.nvim_win_get_config(0).relative ~= '' then
-        vim.api.nvim_win_set_option(0, 'winhighlight', 'Normal:UnfocusedFloatingWindow')
-    end
-end
-
--- Autocmdの設定
-vim.api.nvim_create_autocmd('WinEnter', { callback = onWinEnter })
-vim.api.nvim_create_autocmd('WinLeave', { callback = onWinLeave })
