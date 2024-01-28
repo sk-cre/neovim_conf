@@ -134,12 +134,12 @@ function Floating_term(command)
     })
 end
 
-function Process_atcoder_data(data)
+function Process_atcoder_data(data, username)
     local my_rank = 1
     local my_rating = 1200
 
     for _, participant in ipairs(data.StandingsData) do
-        if participant.UserScreenName == "dinice" then
+        if participant.UserScreenName == username then
             my_rank = participant.Rank
             my_rating = participant.Rating
             break
@@ -184,24 +184,24 @@ function Process_atcoder_data(data)
                 0) .. " (" .. (filtered_correct[task] or 0) .. "/" .. (filtered_submissions[task] or 0) .. ")")
     end
 
-    print("\n自分の順位: " .. my_rank)
+    print("\n順位: " .. my_rank)
 end
 
 function Fetch_atcoder_standings()
     local cookie_file_path = vim.fn.expand("~/Library/Application Support/cargo-compete/cookies.jsonl")
-    local cookie_str = ""
     for line in io.lines(cookie_file_path) do
         local cookie = vim.fn.json_decode(line)
-        if cookie.raw_cookie then
-            cookie_str = cookie_str .. " " .. cookie.raw_cookie
+        if cookie.raw_cookie and cookie.domain.HostOnly == "atcoder.jp" then
+            local username = string.match(cookie.raw_cookie, "UserScreenName:(%w+)")
+            local url = 'https://atcoder.jp/contests/' .. Get_contest() .. '/standings/json'
+            local handle = io.popen('curl -s -b "' .. cookie.raw_cookie .. '" "' .. url .. '"')
+            local result = handle:read("*a")
+            handle:close()
+            local data = vim.fn.json_decode(result)
+            Process_atcoder_data(data, username)
+            return
         end
     end
-    local url = 'https://atcoder.jp/contests/' .. Get_contest() .. '/standings/json'
-    local handle = io.popen('curl -s -b "' .. cookie_str .. '" "' .. url .. '"')
-    local result = handle:read("*a")
-    handle:close()
-    local data = vim.fn.json_decode(result)
-    Process_atcoder_data(data)
 end
 
 local cuc = vim.api.nvim_create_user_command

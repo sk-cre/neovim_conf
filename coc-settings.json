@@ -1,7 +1,8 @@
 {
     "coc.preferences.formatOnType": true,
     "snippets.ultisnips.pythonPrompt": false,
-    "snippets.ultisnips.enable": false,
+    "snippets.ultisnips.enable": true,
+    "snippets.snipmate.enable": false,
     "suggest.completionItemKindLabels": {
         "function": "\uf794",
         "method": "\uf6a6",

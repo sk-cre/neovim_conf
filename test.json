@@ -1,0 +1,13 @@
+{
+    "raw_cookie": "REVEL_SESSION=b2e9a060ccab117edb8881a722389cf402e27c6d-%00csrf_token%3AHJpkycTBFsufEEzwgUi%2BPr5KKCyS9t%2BjQIxI4vCrmAg%3D%00%00SessionKey%3Af47a4c7b053bd6ac32152449b12e4c7d2c153099ef66229d30b8fe853ca637a8e8127790d1143d-1c9c502f0854bca414ce0b3ef1fb92199d39986abbb2d0dc1d9f8170c35b0107%00%00UserScreenName%3Adinice%00%00UserName%3Adinice%00%00a%3Afalse%00%00w%3Afalse%00%00_TS%3A1720342907%00; HttpOnly; Secure",
+    "path": [
+        "/",
+        true
+    ],
+    "domain": {
+        "HostOnly": "atcoder.jp"
+    },
+    "expires": {
+        "AtUtc": "2024-07-07T09:01:47Z"
+    }
+}
