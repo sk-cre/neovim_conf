@@ -7,40 +7,6 @@ local atcoder_url = "https://atcoder.jp/contests/"
 local os = string.sub(vim.loop.os_uname().sysname, 1, 1)
 local open_url = (os == "W" and "!start ") or (os == "D" and "!open -g ") or (os == "L" and "!exploler.exe ") or nil
 
-function Open_playground()
-    vim.fn.system("[ ! -d " .. playground_dir .. " ] && cargo new " .. playground_dir)
-    local template = { "fn main() {", "    println!(\"Hello World!\");", "}" }
-    vim.cmd("tabnew | lcd " .. playground_dir .. " | e ./src/main.rs | %d ")
-    vim.api.nvim_buf_set_lines(vim.api.nvim_get_current_buf(), 0, -1, false, template)
-    vim.cmd("silent w | 60vs")
-    vim.cmd("term cargo watch -x run")
-    vim.cmd("norm G")
-    vim.cmd("wincmd l")
-    vim.cmd("silent 2 | stopinsert")
-end
-
-function Write_snippet()
-    local toml_path = snip_dir .. "/src/other_snippet.toml"
-    local python_command =
-    [[python3 -c "import sys, json, tomllib; print(json.dumps(tomllib.loads(sys.stdin.read()), indent=4))"]]
-    vim.fn.system("cat " .. toml_path .. " | " .. python_command .. " > " .. "~/Documents/Compete/snippet/test.json")
-    vim.cmd("tabnew | lcd " .. snip_dir .. " | e ./vscode_style/rust.json | %d")
-    vim.cmd("r! cargo snippet -t vscode")
-    vim.cmd("w")
-    local a_file = io.open("./vscode_style/rust.json", "r")
-    local a_data = vim.json.decode(a_file:read("*a"))
-    a_file:close()
-    local b_file = io.open("./test.json", "r")
-    local b_data = vim.json.decode(b_file:read("*a"))
-    b_file:close()
-    for k, v in pairs(b_data) do
-        a_data[k] = v
-    end
-    local a_file_write = io.open("./vscode_style/rust.json", "w")
-    a_file_write:write(vim.json.encode(a_data))
-    a_file_write:close()
-end
-
 function Get_contest()
     return vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
 end
@@ -79,7 +45,7 @@ function Open_workspace(contest, problem)
     vim.cmd("lcd " .. full)
     local problem, url = unpack(Get_url(problem or current_problem, problem == nil))
     vim.cmd("silent " .. open_url .. url)
-    vim.cmd("e ./src/bin/" .. problem .. ".rs | 40vs")
+    vim.cmd("e ./src/bin/" .. problem .. ".rs | aboveleft 40vs")
     vim.cmd(string.format("terminal cargo watch -x \"compete t %s\"", problem))
     vim.cmd("norm G")
     vim.cmd("wincmd l")
@@ -111,6 +77,7 @@ function Floating_term(command)
         return
     end
     local bottom_line = vim.api.nvim_buf_line_count(buf)
+    vim.api.nvim_buf_set_keymap(buf, 'n', '<CR>', '<cmd>close<CR>', { noremap = true, silent = true })
     vim.api.nvim_win_set_cursor(win, { bottom_line, 0 })
     vim.api.nvim_set_current_win(orig_win)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), 'n', true)
@@ -163,7 +130,7 @@ function Process_atcoder_data(data, username)
             local result = participant.TaskResults[task]
             if result then
                 total_submissions[task] = (total_submissions[task] or 0) + result.Count
-                if result.Status == 1 then -- 正答の場合
+                if result.Status == 1 then
                     total_correct[task] = (total_correct[task] or 0) + 1
                 end
                 if is_within_range then
@@ -175,16 +142,39 @@ function Process_atcoder_data(data, username)
             end
         end
     end
-
+    local opts = {
+        style = "minimal",
+        relative = "editor",
+        width = 33,
+        height = 11,
+        row = 38,
+        col = 140
+    }
+    local buf = vim.api.nvim_create_buf(false, true)
+    local win = vim.api.nvim_open_win(buf, true, opts)
+    vim.api.nvim_win_set_option(win, 'cursorline', false)
+    vim.api.nvim_win_set_option(win, 'cursorcolumn', false)
+    local lines = {}
+    table.insert(lines, "")
     for _, task in ipairs(tasks) do
-        print(task:sub(8, 8) ..
-            "  " ..
-            (total_correct[task] or 0) ..
-            "/" .. (total_submissions[task] or
-                0) .. " (" .. (filtered_correct[task] or 0) .. "/" .. (filtered_submissions[task] or 0) .. ")")
-    end
+        local total_correct_formatted = string.format("%5d", total_correct[task] or 0)
+        local total_submissions_formatted = string.format("%5d", total_submissions[task] or 0)
+        local filtered_correct_formatted = string.format("%4d", filtered_correct[task] or 0)
+        local filtered_submissions_formatted = string.format("%4d", filtered_submissions[task] or 0)
 
-    print("\n順位: " .. my_rank)
+        table.insert(lines, "   " .. task:sub(8, 8) ..
+            "  " ..
+            total_correct_formatted ..
+            "/" .. total_submissions_formatted ..
+            " (" .. filtered_correct_formatted .. "/" .. filtered_submissions_formatted .. ")")
+    end
+    table.insert(lines, "")
+    table.insert(lines, "   Rank: " .. my_rank)
+
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+    vim.api.nvim_win_set_option(win, 'cursorline', false)
+    vim.api.nvim_win_set_option(win, 'cursorcolumn', false)
+    vim.api.nvim_buf_set_keymap(buf, 'n', '<CR>', '<cmd>close<CR>', { noremap = true, silent = true })
 end
 
 function Fetch_atcoder_standings()
@@ -192,26 +182,25 @@ function Fetch_atcoder_standings()
     for line in io.lines(cookie_file_path) do
         local cookie = vim.fn.json_decode(line)
         if cookie.raw_cookie and cookie.domain.HostOnly == "atcoder.jp" then
-            local username = string.match(cookie.raw_cookie, "UserScreenName:(%w+)")
+            local username = string.match(cookie.raw_cookie, "UserScreenName%%3A(.-)%%00")
             local url = 'https://atcoder.jp/contests/' .. Get_contest() .. '/standings/json'
             local handle = io.popen('curl -s -b "' .. cookie.raw_cookie .. '" "' .. url .. '"')
             local result = handle:read("*a")
             handle:close()
-            local data = vim.fn.json_decode(result)
-            Process_atcoder_data(data, username)
+            Process_atcoder_data(vim.fn.json_decode(result), username)
             return
         end
     end
+    print("error")
 end
 
 local cuc = vim.api.nvim_create_user_command
 cuc("NN", function(opts) Open_workspace(vim.split(opts.args, " ")[1], vim.split(opts.args, " ")[2] or "") end,
     { nargs = "+" })
 cuc("Np", function(opts) Open_workspace(Get_contest(), opts.args ~= "" and opts.args or nil) end, { nargs = "?" })
-cuc("Playground", function() Open_playground() end, {})
-cuc("Snippet", function() vim.cmd("tabnew | lcd " .. snip_dir .. "/src/ | e .") end, {})
-cuc("SnippetWrite", function() Write_snippet() end, {})
-cuc("Watch", function() Floating_term(":term cargo compete w submissions atcoder " .. Get_contest()) end, {})
+--cuc("Snippet", function() vim.cmd("tabnew | lcd " .. snip_dir .. "/src/ | e .") end, {})
+--cuc("Playground", function() Open_playground() end, {})
+--cuc("SnippetWrite", function() Write_snippet() end, {})
 cuc("Me", function() vim.cmd(open_url .. atcoder_url .. Get_contest() .. '/submissions/me') end, {})
 cuc("Our",
     function()
@@ -229,25 +218,3 @@ cuc("Submit", function() Floating_term('term cargo compete s ' .. Get_problem())
 cuc("SubmitN", function() Floating_term('term cargo compete s ' .. Get_problem() .. " --no-test") end, {})
 cuc("TestCase", function() vim.cmd('35sp|e testcases/' .. Get_problem() .. ".yml") end, {})
 cuc('FetchAtCoderStandings', Fetch_atcoder_standings, {})
-
---Function to scroll a terminal buffer if it's visible and not focused
-function _G.terminal_scroll()
-    for _, win in ipairs(vim.api.nvim_list_wins()) do
-        local buf = vim.api.nvim_win_get_buf(win)
-        if vim.api.nvim_buf_get_option(buf, 'buftype') == 'terminal' then
-            vim.api.nvim_win_set_cursor(win, { vim.api.nvim_buf_line_count(buf), 0 })
-        end
-    end
-end
-
-vim.api.nvim_create_autocmd("BufWritePost", { pattern = "*", callback = function() _G.terminal_scroll() end, })
-
-vim.api.nvim_create_autocmd("WinEnter", {
-    pattern = "*",
-    callback = function()
-        if vim.api.nvim_buf_get_option(0, "buftype") == "terminal" and (vim.api.nvim_buf_get_lines(0, -2, -1, false)[1] or ""):find("~") then
-            vim.api.nvim_command('startinsert')
-        end
-    end
-})
---vim.cmd([[autocmd WinLeave * if &buftype == 'terminal' | norm G | endif]])
