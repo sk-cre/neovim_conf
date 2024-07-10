@@ -34,6 +34,8 @@ vim.api.nvim_create_user_command('RcP', "e " .. vim.fn.stdpath("config") .. "/lu
 vim.api.nvim_create_user_command('RcS', "e " .. vim.fn.stdpath("config") .. "/lua/colorscheme.lua", { nargs = 0 })
 vim.api.nvim_create_user_command('RcT', "e " .. vim.fn.stdpath("config") .. "/lua/tabline.lua", { nargs = 0 })
 
+vim.api.nvim_create_user_command('PP', function() vim.cmd('%d _ | normal! p') end, {})
+
 require("plugins")
 require("playground")
 require("compete")
@@ -41,24 +43,29 @@ require("snippet")
 require("colorscheme")
 require("tabline")
 
---Function to scroll a terminal buffer if it's visible and not focused
-function _G.terminal_scroll()
-    for _, win in ipairs(vim.api.nvim_list_wins()) do
-        local buf = vim.api.nvim_win_get_buf(win)
-        if vim.api.nvim_buf_get_option(buf, 'buftype') == 'terminal' then
-            vim.api.nvim_win_set_cursor(win, { vim.api.nvim_buf_line_count(buf), 0 })
+function _G.Set_Watching(editor_buf, command)
+    vim.api.nvim_create_autocmd("BufWritePost", {
+        buffer = editor_buf,
+        callback = function()
+            -- 現在のウィンドウを取得
+            local editor_win = vim.api.nvim_get_current_win()
+
+            -- 現在のタブ内のすべてのウィンドウを取得
+            local tabnr = vim.api.nvim_win_get_tabpage(editor_win)
+            local wins = vim.api.nvim_tabpage_list_wins(tabnr)
+
+            -- ターミナルバッファを持つウィンドウを探す
+            for _, win in ipairs(wins) do
+                local buf = vim.api.nvim_win_get_buf(win)
+                if vim.bo[buf].buftype == "terminal" then
+                    vim.api.nvim_set_current_win(win)
+                    vim.api.nvim_chan_send(vim.b.terminal_job_id, "\n") -- Ctrl+C を送信
+                    vim.api.nvim_chan_send(vim.b.terminal_job_id, command .. "\n")
+                    vim.api.nvim_win_set_cursor(win, { vim.api.nvim_buf_line_count(buf), 0 })
+                    vim.api.nvim_set_current_win(editor_win)
+                    break
+                end
+            end
         end
-    end
+    })
 end
-
-vim.api.nvim_create_autocmd("BufWritePost", { pattern = "*", callback = function() _G.terminal_scroll() end, })
-
-vim.api.nvim_create_autocmd("WinEnter", {
-    pattern = "*",
-    callback = function()
-        if vim.api.nvim_buf_get_option(0, "buftype") == "terminal" and (vim.api.nvim_buf_get_lines(0, -2, -1, false)[1] or ""):find("~") then
-            vim.api.nvim_command('startinsert')
-        end
-    end
-})
---vim.cmd([[autocmd WinLeave * if &buftype == 'terminal' | norm G | endif]])

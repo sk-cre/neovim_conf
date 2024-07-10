@@ -33,5 +33,6 @@
     "lua.format.enable": true,
     "snippets.textmateSnippetsRoots": [
         "~/Documents/Compete/snippet/vscode_style"
-    ]
+    ],
+    "inlayHints.enable": false
 }

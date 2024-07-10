@@ -13,7 +13,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     --{ 'neoclide/coc.nvim', branch = 'release', build = "cd /root/.local/share/nvim/lazy/coc.nvim/ && npm ci"},
-    { 'neoclide/coc.nvim',       branch = 'release', build = "npm ci" },
+    { 'neoclide/coc.nvim',                   branch = 'release', build = "npm ci" },
     { 'honza/vim-snippets' },
     { 'nvim-lua/plenary.nvim' },
     { 'rust-lang/rust.vim' },
@@ -21,6 +21,7 @@ require("lazy").setup({
     { 'navarasu/onedark.nvim' },
     { "savq/melange-nvim" },
     { "rcarriga/nvim-notify" },
+    { "lukas-reineke/indent-blankline.nvim", main = "ibl",       opts = {} },
     {
         'nvim-treesitter/nvim-treesitter',
         event = { 'BufNewFile', 'BufRead' },

@@ -1,5 +1,7 @@
 local home_dir = vim.fn.expand("~/Documents/Compete")
 local atcoder_dir = home_dir .. "/atcoder"
+local snip_dir = home_dir .. "/snippet"
+local playground_dir = home_dir .. "/play_ground"
 
 local atcoder_url = "https://atcoder.jp/contests/"
 local os = string.sub(vim.loop.os_uname().sysname, 1, 1)
@@ -43,109 +45,73 @@ function Open_workspace(contest, problem)
     vim.cmd("lcd " .. full)
     local problem, url = unpack(Get_url(problem or current_problem, problem == nil))
     vim.cmd("silent " .. open_url .. url)
-    vim.cmd("e ./src/bin/" .. problem .. ".rs | aboveleft 50vs")
-    local command = string.format("cargo compete t %s", problem)   -- Set_Watching用
-    vim.cmd("term")                                                -- Set_Watching用
-    vim.api.nvim_chan_send(vim.b.terminal_job_id, command .. "\n") -- Set_Watching用
+    vim.cmd("e ./src/bin/" .. problem .. ".rs | aboveleft 40vs")
+    vim.cmd(string.format("terminal cargo watch -x \"compete t %s\"", problem))
+    vim.cmd("norm G")
     vim.cmd("wincmd l")
-    local editor_buf = vim.api.nvim_get_current_buf()              -- Set_Watching用
     vim.cmd("silent 5 | stopinsert")
-    vim.cmd(string.format("let t:custom_%s = '%s %s'", 'tabname', contest, problem))
-    Set_Watching(editor_buf, command) -- Set_Watching用
-end
-
-function Setup_floating_window_highlight(win_id)
-    -- ウィンドウのハイライトを設定する関数を定義
-    local function set_win_highlight(focused)
-        -- ウィンドウが有効かどうかをチェック
-        if not vim.api.nvim_win_is_valid(win_id) then
-            return
-        end
-        local hl = focused and "MyFloatingTerm" or "MyFloatingTermUnfocused"
-        local border_hl = focused and "MyFloatingTermBorder" or "MyFloatingTermBorderUnfocused"
-        pcall(vim.api.nvim_win_set_option, win_id, "winhighlight", "NormalFloat:" .. hl .. ",FloatBorder:" .. border_hl)
-    end
-
-    -- 初期状態でフォーカスされているのでアクティブなハイライトを設定
-    set_win_highlight(true)
-
-    -- フォーカスの変更を監視するオートコマンドを作成
-    local augroup_name = "FloatingTermHighlight" .. win_id
-    local augroup = vim.api.nvim_create_augroup(augroup_name, { clear = true })
-    vim.api.nvim_create_autocmd({ "WinEnter", "WinLeave" }, {
-        group = augroup,
-        callback = function(ev)
-            if not vim.api.nvim_win_is_valid(win_id) then
-                -- ウィンドウが無効になった場合、オートコマンドを削除
-                vim.api.nvim_del_augroup_by_name(augroup_name)
-                return
-            end
-            local current_win = vim.api.nvim_get_current_win()
-            if ev.event == "WinEnter" then
-                set_win_highlight(current_win == win_id)
-            elseif ev.event == "WinLeave" and current_win == win_id then
-                set_win_highlight(false)
-            end
-        end
-    })
 end
 
 function Floating_term(command)
-    --vim.api.nvim_set_hl(0, "MyFloatingTerm", { bg = "#228B22" })                                -- Forest Green
-    --vim.api.nvim_set_hl(0, "MyFloatingTermUnfocused", { bg = "#354f35" })                       -- Darker Green
-    --vim.api.nvim_set_hl(0, "MyFloatingTermBorder", { fg = "#8FBC8F", bg = "#8FBC8F" })          -- Dark Sea Green
-    --vim.api.nvim_set_hl(0, "MyFloatingTermBorderUnfocused", { fg = "#2F4F4F", bg = "#2F4F4F" }) -- Dark Slate Gray
+    vim.cmd("highlight MyFloatingTerm guibg=Olive")         -- フローティングウィンドウの背景色をOliveに設定
+    vim.cmd("highlight MyFloatingTermUnfocused guibg=Grey") -- フォーカスが外れた場合の背景色をGreyに設定
+    vim.o.termguicolors = true                              -- GUIカラースキームを使用
+    vim.o.pumblend = 20                                     -- ポップアップメニューの透明度を設定
 
-    -- Color Scheme 2: Navy Blue and Sky Blue
-    vim.api.nvim_set_hl(0, "MyFloatingTerm", { bg = "#000080" })                                -- Navy Blue
-    vim.api.nvim_set_hl(0, "MyFloatingTermUnfocused", { bg = "#191970" })                       -- Midnight Blue
-    vim.api.nvim_set_hl(0, "MyFloatingTermBorder", { fg = "#87CEEB", bg = "#87CEEB" })
-    vim.api.nvim_set_hl(0, "MyFloatingTermBorderUnfocused", { fg = "#4682B4", bg = "#4682B4" }) -- Steel Blue
-    --vim.api.nvim_set_hl(0, "MyFloatingTerm", { bg = "Olive" })
-    --vim.api.nvim_set_hl(0, "MyFloatingTermUnfocused", { bg = "Grey" })
-    --vim.api.nvim_set_hl(0, "MyFloatingTermBorder", { fg = "Olive", bg = "Olive" })
-    --vim.api.nvim_set_hl(0, "MyFloatingTermBorderUnfocused", { fg = "Grey", bg = "Grey" })
-    vim.o.termguicolors = true
-    vim.o.pumblend = 20
-    local orig_win = vim.api.nvim_get_current_win()  -- 元のウィンドウIDを保存
-    local buf = vim.api.nvim_create_buf(false, true) -- バッファを作成
+    local orig_win = vim.api.nvim_get_current_win()         -- 現在のウィンドウIDを保存
+    local buf = vim.api.nvim_create_buf(false, true)        -- 新しいバッファを作成
     local win = vim.api.nvim_open_win(buf, true, {
-        relative = "editor",
-        height = math.floor(vim.o.lines / 5 * 2),
-        width = vim.o.columns - 20,
-        col = 10,
-        row = math.floor(vim.o.lines / 5 * 3) - 2,
-        style = 'minimal',
-        border = 'none',
+        relative = "win",                                   -- 現在のウィンドウを基準に位置を設定
+        height = 35,                                        -- フローティングウィンドウの高さ
+        width = 138,                                        -- フローティングウィンドウの幅
+        col = vim.o.columns - 138,                          -- ウィンドウの列位置
+        row = vim.o.lines - 35 - 3,                         -- ウィンドウの行位置
+        style = 'minimal',                                  -- 最小限の装飾でウィンドウを開く
     })
-    vim.api.nvim_win_set_option(win, "winhighlight",
-        "NormalFloat:MyFloatingTerm,NormalFloatNC:MyFloatingTermUnfocused,FloatBorder:MyFloatingTermBorder")
-    Setup_floating_window_highlight(win)
-    vim.o.winblend = 20
-    vim.cmd(command)
-    if not string.match(command, "^term cargo compete s") then
-        return
+    -- フローティングウィンドウのハイライト設定
+    vim.api.nvim_win_set_option(win, "winhighlight", "NormalFloat:MyFloatingTerm")
+    vim.api.nvim_win_set_option(win, "winhighlight", "NormalFloat:MyFloatingTerm,NormalFloatNC:MyFloatingTermUnfocused")
+    vim.o.winblend = 20 -- ウィンドウの透明度を設定
+
+    vim.cmd(command)    -- コマンドを実行
+
+    return orig_win, buf, win
+end
+
+function Submit(test)
+    local orig_win, buf, win
+    if test then
+        orig_win, buf, win = Floating_term("term cargo compete s " .. Get_problem())
+    else
+        orig_win, buf, win = Floating_term("term cargo compete s " .. Get_problem() .. "--no-test")
     end
-    local bottom_line = vim.api.nvim_buf_line_count(buf)
+
+    local bottom_line = vim.api.nvim_buf_line_count(buf) -- バッファの行数を取得
+    -- Enterキーが押されたときにウィンドウを閉じるマッピングを設定
     vim.api.nvim_buf_set_keymap(buf, 'n', '<CR>', '<cmd>close<CR>', { noremap = true, silent = true })
-    vim.api.nvim_win_set_cursor(win, { bottom_line, 0 })
-    vim.api.nvim_set_current_win(orig_win)
+    vim.api.nvim_win_set_cursor(win, { bottom_line, 0 }) -- カーソルをバッファの最後の行に設定
+    vim.api.nvim_set_current_win(orig_win)               -- 元のウィンドウに戻る
+    -- Escキーを押したように見せかける
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), 'n', true)
-    local orig_tab_id = vim.api.nvim_get_current_tabpage()
+
+    local orig_tab_id = vim.api.nvim_get_current_tabpage() -- 現在のタブページIDを保存
     vim.api.nvim_create_autocmd("TermClose", {
-        buffer = buf,
-        once = true,
+        buffer = buf,                                      -- バッファを指定
+        once = true,                                       -- この自動コマンドは一度だけ実行される
         callback = function()
+            -- 現在のタブページが元のタブページと異なる場合
             if orig_tab_id ~= vim.api.nvim_get_current_tabpage() then
-                local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+                local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false) -- バッファの全行を取得
                 for i, line in ipairs(lines) do
+                    -- "Successfully submitted the code" を含む行が見つかった場合
                     if line:find("Successfully submitted the code") then
                         local parts = vim.split(lines[i + 1] or " | Error |  | Error", " │ ", true)
+                        -- macOSの通知センターに通知を表示
                         vim.api.nvim_command('!osascript -e \'display notification "' ..
                             parts[2] .. '" with title "' .. parts[4] .. '"\'')
                     end
                 end
-                vim.api.nvim_win_close(win, true)
+                vim.api.nvim_win_close(win, true) -- フローティングウィンドウを閉じる
             end
         end
     })
@@ -248,6 +214,9 @@ local cuc = vim.api.nvim_create_user_command
 cuc("NN", function(opts) Open_workspace(vim.split(opts.args, " ")[1], vim.split(opts.args, " ")[2] or "") end,
     { nargs = "+" })
 cuc("Np", function(opts) Open_workspace(Get_contest(), opts.args ~= "" and opts.args or nil) end, { nargs = "?" })
+--cuc("Snippet", function() vim.cmd("tabnew | lcd " .. snip_dir .. "/src/ | e .") end, {})
+--cuc("Playground", function() Open_playground() end, {})
+--cuc("SnippetWrite", function() Write_snippet() end, {})
 cuc("Me", function() vim.cmd(open_url .. atcoder_url .. Get_contest() .. '/submissions/me') end, {})
 cuc("Our",
     function()
@@ -261,7 +230,8 @@ cuc("Open", function() vim.cmd(open_url .. Get_url(Get_problem(), false)[2]) end
 cuc("Watch", function() Floating_term("term cargo compete w submissions atcoder " .. Get_contest()) end, {})
 cuc("Test", function() Floating_term('term cargo compete t ' .. Get_problem()) end, {})
 cuc("TestR", function() Floating_term('term cargo compete t ' .. Get_problem() .. " --release") end, {})
-cuc("Submit", function() Floating_term('term cargo compete s ' .. Get_problem()) end, {})
+cuc("Submit", function() Submit(true) end, {})
+cuc("SubmitN", function() Submit(false) end, {})
 cuc("SubmitN", function() Floating_term('term cargo compete s ' .. Get_problem() .. " --no-test") end, {})
 cuc("TestCase", function() vim.cmd('35sp|e testcases/' .. Get_problem() .. ".yml") end, {})
 cuc('FetchAtCoderStandings', Fetch_atcoder_standings, {})

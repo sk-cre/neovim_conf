@@ -7,9 +7,7 @@ function Write_snippet()
     [[python3 -c "import sys, json, tomllib; print(json.dumps(tomllib.loads(sys.stdin.read()), indent=4))"]]
     local toml_content = vim.fn.system("cat " .. toml_path .. " | " .. python_command)
     local snippet_data = vim.json.decode(toml_content)
-    vim.cmd("cd " .. snip_dir)
-    local cargo_snippet_output = vim.fn.system("cargo snippet -t vscode")
-    vim.cmd("cd -")
+    local cargo_snippet_output = vim.fn.system("(cd " .. snip_dir .. " && cargo snippet -t vscode)")
     local cargo_snippet_data = vim.json.decode(cargo_snippet_output)
     for k, v in pairs(cargo_snippet_data) do
         snippet_data[k] = v
