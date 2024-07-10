@@ -43,15 +43,11 @@ function Open_workspace(contest, problem)
     vim.cmd("lcd " .. full)
     local problem, url = unpack(Get_url(problem or current_problem, problem == nil))
     vim.cmd("silent " .. open_url .. url)
-    vim.cmd("e ./src/bin/" .. problem .. ".rs | aboveleft 50vs")
-    local command = string.format("cargo compete t %s", problem)   -- Set_Watching用
-    vim.cmd("term")                                                -- Set_Watching用
-    vim.api.nvim_chan_send(vim.b.terminal_job_id, command .. "\n") -- Set_Watching用
-    vim.cmd("wincmd l")
-    local editor_buf = vim.api.nvim_get_current_buf()              -- Set_Watching用
+    vim.cmd("e ./src/bin/" .. problem .. ".rs")
+    local command = string.format("cargo compete t %s", problem)
+    Set_Watch_Term(command, 50)
     vim.cmd("silent 5 | stopinsert")
     vim.cmd(string.format("let t:custom_%s = '%s %s'", 'tabname', contest, problem))
-    Set_Watching(editor_buf, command) -- Set_Watching用
 end
 
 function Setup_floating_window_highlight(win_id)

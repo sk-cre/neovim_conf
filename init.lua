@@ -43,11 +43,16 @@ require("snippet")
 require("colorscheme")
 require("tabline")
 
-function _G.Set_Watching(editor_buf, command)
+function _G.Set_Watch_Term(command, width)
+    local editor_buf = vim.api.nvim_get_current_buf()
+    vim.cmd("aboveleft " .. width .. "vs")
+    vim.cmd("term")
+    vim.api.nvim_chan_send(vim.b.terminal_job_id, command .. "\n")
+    vim.cmd("norm G")
+    vim.cmd("wincmd l")
     vim.api.nvim_create_autocmd("BufWritePost", {
         buffer = editor_buf,
         callback = function()
-            -- 現在のウィンドウを取得
             local editor_win = vim.api.nvim_get_current_win()
 
             -- 現在のタブ内のすべてのウィンドウを取得
