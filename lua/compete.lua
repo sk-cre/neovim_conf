@@ -87,20 +87,40 @@ function Setup_floating_window_highlight(win_id)
 end
 
 function Floating_term(command)
-    --vim.api.nvim_set_hl(0, "MyFloatingTerm", { bg = "#228B22" })                                -- Forest Green
-    --vim.api.nvim_set_hl(0, "MyFloatingTermUnfocused", { bg = "#354f35" })                       -- Darker Green
-    --vim.api.nvim_set_hl(0, "MyFloatingTermBorder", { fg = "#8FBC8F", bg = "#8FBC8F" })          -- Dark Sea Green
-    --vim.api.nvim_set_hl(0, "MyFloatingTermBorderUnfocused", { fg = "#2F4F4F", bg = "#2F4F4F" }) -- Dark Slate Gray
+    -- 既存の色の組み合わせを定義
+    local color_name = { "MyFloatingTerm", "MyFloatingTermUnfocused", "MyFloatingTermBorder",
+        "MyFloatingTermBorderUnfocused" }
+    local color_sets = {
+        {
+            main = "#228B22",            -- Forest Green
+            unfocused = "#354f35",       -- Darker Green
+            border = "#8FBC8F",          -- Dark Sea Green
+            unfocused_border = "#2F4F4F" -- Dark Slate Gray
+        },
+        {
+            main = "Olive",
+            unfocused = "Grey",
+            border = "Olive",
+            unfocused_border = "Grey"
+        },
+        {
+            main = "#000080",            -- Navy Blue
+            unfocused = "#191970",       -- Midnight Blue
+            border = "#87CEEB",          -- Sky Blue
+            unfocused_border = "#4682B4" -- Steel Blue
+        }
+    }
 
-    -- Color Scheme 2: Navy Blue and Sky Blue
-    vim.api.nvim_set_hl(0, "MyFloatingTerm", { bg = "#000080" })                                -- Navy Blue
-    vim.api.nvim_set_hl(0, "MyFloatingTermUnfocused", { bg = "#191970" })                       -- Midnight Blue
-    vim.api.nvim_set_hl(0, "MyFloatingTermBorder", { fg = "#87CEEB", bg = "#87CEEB" })
-    vim.api.nvim_set_hl(0, "MyFloatingTermBorderUnfocused", { fg = "#4682B4", bg = "#4682B4" }) -- Steel Blue
-    --vim.api.nvim_set_hl(0, "MyFloatingTerm", { bg = "Olive" })
-    --vim.api.nvim_set_hl(0, "MyFloatingTermUnfocused", { bg = "Grey" })
-    --vim.api.nvim_set_hl(0, "MyFloatingTermBorder", { fg = "Olive", bg = "Olive" })
-    --vim.api.nvim_set_hl(0, "MyFloatingTermBorderUnfocused", { fg = "Grey", bg = "Grey" })
+    -- ランダムに色の組み合わせを選択
+    local selected_set = color_sets[math.random(#color_sets)]
+
+    -- 選択された色でハイライトを設定
+    vim.api.nvim_set_hl(0, "MyFloatingTerm", { bg = selected_set.main })
+    vim.api.nvim_set_hl(0, "MyFloatingTermUnfocused", { bg = selected_set.unfocused })
+    vim.api.nvim_set_hl(0, "MyFloatingTermBorder", { fg = selected_set.border, bg = selected_set.border })
+    vim.api.nvim_set_hl(0, "MyFloatingTermBorderUnfocused",
+        { fg = selected_set.unfocused_border, bg = selected_set.unfocused_border })
+
     vim.o.termguicolors = true
     vim.o.pumblend = 20
     local orig_win = vim.api.nvim_get_current_win()  -- 元のウィンドウIDを保存

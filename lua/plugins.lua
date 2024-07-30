@@ -29,7 +29,7 @@ require("lazy").setup({
         config = function()
             require('nvim-treesitter.configs').setup {
                 ensure_installed = {
-                    "typescript", "javascript", "rust", "python", "go", "lua", "bash", "html", "css", "vue",
+                    "typescript", "javascript", "rust", "python", "go", "lua", "bash", "html", "css", "vue", "java",
                     "vim", "yaml", "toml", "ini", "json", "dockerfile", "markdown", "diff", "gitignore"
                 },
                 highlight = {
